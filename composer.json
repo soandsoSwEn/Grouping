@@ -1,0 +1,28 @@
+{
+    "name": "soandso/grouping",
+    "description": "Statistical grouping",
+    "type": "liblary",
+    "license": "GPLv2 or later",
+    "authors": [
+        {
+            "name": "Dmytriyenko Vyacheslav",
+            "email": "dmytriyenko.vyacheslav@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://soandso.biz/"
+    },
+    "config" : {
+        "sort-packages" : true
+    },
+    "autoload" : {
+        "psr-4" : {
+            "swe\\" : "src"
+        }
+    },
+    "require": {
+        "php": "^7.0",
+        "roave/security-advisories" : "dev-master"
+    },
+    "minimum-stability": "stable"
+}
