@@ -2,6 +2,8 @@
 
 namespace swe;
 
+use swe\StatSeries;
+
 /**
  * Grouping is the core class for the component application
  *
@@ -9,35 +11,27 @@ namespace swe;
  */
 class Grouping
 {
-    /**
-     * @var integer Number of partial intervals of statistical series
-     */
-    private $_k;
     
-    /**
-     * @var float Partial interval length
-     */
-    private $_C;
+    public $return_type = ['array', 'json' ,'output', 'file'];
+
+
+    private $_series;
     
-    /**
-     * @var float Values ​​of a random variable at the boundaries 
-     * of partial intervals
-     */
-    private $_X;
-    
-    /**
-     * @var integer Interval frequencies
-     */
-    private $_m_i;
-    
-    /**
-     * @var float The number of members of the series that fall 
-     * into each partial interval
-     */
-    private $_x_;
-    
-    /**
-     * @var float Relative spacing frequencies
-     */
-    private $_p;
+    public function __construct()
+    {
+        $this->_series = new StatSeries();
+    }
+
+    public function putSource(array $source) : void
+    {
+        $this->_series->assimilateData($source);
+    }
+
+    public function buildGss(string $output) : void
+    {
+        if(!in_array($output, $this->return_type)) {
+            throw new \ErrorException('Error return type');
+        }
+        $this->_series->generateSeries($output);
+    }
 }
