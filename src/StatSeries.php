@@ -121,9 +121,9 @@ class StatSeries
         $this->_partial_intervals[$key]['m_i'] = $data;
     }
     
-    public function setX_(float $data) : void
+    public function setX_(int $key, float $data) : void
     {
-        $this->_x_ = $data;
+        $this->_partial_intervals[$key]['mid_interval'] = $data;
     }
     
     public function setP(float $data) : void
@@ -237,7 +237,7 @@ class StatSeries
     {
         return $this->setXmin($this->getXmin() + min($data));
     }
-    
+     
     public function calculateXmax(array $data) : float
     {
         return $this->setXmax($this->getXmax() + max($data));
@@ -274,6 +274,7 @@ class StatSeries
                 }
             }
         }
+        $this->addMidPartialInterval($this->getPartIntervals());
     }
 
     public function setPartialIntervals()
@@ -323,6 +324,13 @@ class StatSeries
             }
         }
         return $count;
+    }
+    
+    public function addMidPartialInterval(array $intervals_data)
+    {
+        foreach ($intervals_data as $k => $interval) {
+            $this->setX_($k, ($interval['left_value']+$interval['right_value'])/2);
+        }
     }
 
     public function deleteTmpFile($file)
