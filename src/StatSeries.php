@@ -237,7 +237,7 @@ class StatSeries
     {
         return $this->setXmin($this->getXmin() + min($data));
     }
-     
+    
     public function calculateXmax(array $data) : float
     {
         return $this->setXmax($this->getXmax() + max($data));
@@ -275,6 +275,7 @@ class StatSeries
             }
         }
         $this->addMidPartialInterval($this->getPartIntervals());
+        $this->addRelativeFrequencies($this->getN(), $this->getPartIntervals());
     }
 
     public function setPartialIntervals()
@@ -326,10 +327,18 @@ class StatSeries
         return $count;
     }
     
-    public function addMidPartialInterval(array $intervals_data)
+    public function addMidPartialInterval(array $intervals_data) : void
     {
         foreach ($intervals_data as $k => $interval) {
             $this->setX_($k, ($interval['left_value']+$interval['right_value'])/2);
+        }
+    }
+    
+    public function addRelativeFrequencies(int $n, array $part_intervals) : void
+    {
+        foreach ($part_intervals as $k => $interval) {
+            $this->setP($interval['m_i']/$n);
+            $this->_partial_intervals[$k]['relative_frequency'] = $this->getP();
         }
     }
 
