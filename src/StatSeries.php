@@ -233,11 +233,13 @@ class StatSeries
         }
     }
 
+    //????????????
     public function calculateXmin(array $data) : float
     {
         return $this->setXmin($this->getXmin() + min($data));
     }
     
+    //???????????
     public function calculateXmax(array $data) : float
     {
         return $this->setXmax($this->getXmax() + max($data));
@@ -267,7 +269,7 @@ class StatSeries
             if(is_file($this->_temp_directory.'/'.$file))
             {
                 list($time_start, $time_file) = explode('_', $file);
-                if(strtotime($this->_time_statr) == strtotime($time_start))
+                if($this->_time_statr == intval($time_start))
                 {
                     $file_data = unserialize(file_get_contents($this->_temp_directory.'/'.$file));
                     $this->calculateIntFrequencies($file_data);
@@ -276,6 +278,7 @@ class StatSeries
         }
         $this->addMidPartialInterval($this->getPartIntervals());
         $this->addRelativeFrequencies($this->getN(), $this->getPartIntervals());
+        $this->deleteTmpFiles($this->_temp_directory, $this->_time_statr);
     }
 
     public function setPartialIntervals()
@@ -342,10 +345,18 @@ class StatSeries
         }
     }
 
-    public function deleteTmpFile($file)
+    public function deleteTmpFiles($temp_directory, $time_start)
     {
-        if(file_exists(file)) {
-            unlink($file);
+        $files = scandir($temp_directory);
+        foreach ($files as $file)
+        {
+            if (is_file($this->_temp_directory . '/' . $file))
+            {
+                list($time_start_file) = explode('_', $file);
+                if ($time_start == intval($time_start_file)) {
+                    unlink($temp_directory . '/' . $file);
+                }
+            }
         }
     }
 }
