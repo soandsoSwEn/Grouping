@@ -5,9 +5,9 @@ namespace swe;
 use swe\StatSeriesInterface;
 
 /**
- * Description of StatSeries
+ * Class that contains basic methods for constructing a grouped statistical series
  *
- * @author Vyacheslav
+ * @author Dmytriyenko Vyacheslav <dmytriyenko.vyacheslav@gmail.com>
  */
 class StatSeries implements StatSeriesInterface
 {
@@ -48,13 +48,6 @@ class StatSeries implements StatSeriesInterface
     private $_C;
     
     /**
-     * @var float Values ​​of a random variable at the boundaries 
-     * of partial intervals
-     */
-    private $_X;
-    
-    /**
-     *
      * @var array Partial intervals of a grouped statistical series 
      */
     private $_partial_intervals = [];
@@ -201,23 +194,11 @@ class StatSeries implements StatSeriesInterface
     public function assimilateData(array $data) : void
     {
         //xmin
-        if(!is_null($this->getXmin())) {
-            if($min = min($data) < $this->getXmin()) {
-                $this->setXmin(floatval(min($data)));
-            }
-        } else {
-            $this->setXmin(floatval(min($data)));
-        }
+        $this->calculateXmin($data);
         
         //xmax
-        if(!is_null($this->getXmax())) {
-            if($max = max($data) < $this->getXmax()) {
-                $this->setXmax($max);
-            }
-        } else {
-            $this->setXmax(max($data));
-        }
-        
+        $this->calculateXmax($data);
+                
         //n
         if($this->getN()) {
             $this->calculateN(count($data));
@@ -242,6 +223,28 @@ class StatSeries implements StatSeriesInterface
             file_put_contents($file, serialize($data), FILE_APPEND);
         } else {
             file_put_contents($file, serialize($data));
+        }
+    }
+
+    public function calculateXmin(array $data) : void
+    {
+        if(!is_null($this->getXmin())) {
+            if($min = min($data) < $this->getXmin()) {
+                $this->setXmin(floatval(min($data)));
+            }
+        } else {
+            $this->setXmin(floatval(min($data)));
+        }
+    }
+    
+    public function calculateXmax(array $data) : void
+    {
+        if(!is_null($this->getXmax())) {
+            if($max = max($data) < $this->getXmax()) {
+                $this->setXmax($max);
+            }
+        } else {
+            $this->setXmax(max($data));
         }
     }
     
