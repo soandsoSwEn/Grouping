@@ -12,10 +12,8 @@ use swe\StatSeries;
 class Grouping
 {
     
-    public $return_type = ['array', 'json' ,'output', 'file'];
-
-
     private $_series;
+    public $return_type = ['array', 'json', 'file'];
     
     public function __construct()
     {
@@ -27,11 +25,11 @@ class Grouping
         $this->_series->assimilateData($source);
     }
 
-    public function buildGss(string $output) : void
+    public function buildGss(string $output, ?string $path_file = null) : ?array
     {
         if(!in_array($output, $this->return_type)) {
             throw new \ErrorException('Error return type');
         }
-        $this->_series->generateSeries($output);
+        return $this->_series->generateSeries($output, $path_file);
     }
 }

@@ -11,6 +11,7 @@ class StatSeries
 {
     
     private $_temp_directory;
+    private $_output_file_name = 'statistical_series.txt';
     const TEMP_FILE = 'source_data';
     
     private $_time_statr;
@@ -126,7 +127,12 @@ class StatSeries
         $this->_partial_intervals[$key]['mid_interval'] = $data;
     }
     
-    public function setP(float $data) : void
+    public function getOutputFileName() : string
+    {
+        return $this->_output_file_name;
+    }
+
+        public function setP(float $data) : void
     {
         $this->_p = $data;
     }
@@ -233,13 +239,11 @@ class StatSeries
         }
     }
 
-    //????????????
     public function calculateXmin(array $data) : float
     {
         return $this->setXmin($this->getXmin() + min($data));
     }
     
-    //???????????
     public function calculateXmax(array $data) : float
     {
         return $this->setXmax($this->getXmax() + max($data));
@@ -260,7 +264,7 @@ class StatSeries
         return $this->_C = ($this->getXmax() - $this->getXmin()) / $this->getK();
     }
     
-    public function generateSeries(string $type_output)
+    public function generateSeries(string $type_output, ?string $path_file = null)
     {
         $this->setPartialIntervals();
         $files = scandir($this->_temp_directory);
@@ -279,6 +283,7 @@ class StatSeries
         $this->addMidPartialInterval($this->getPartIntervals());
         $this->addRelativeFrequencies($this->getN(), $this->getPartIntervals());
         $this->deleteTmpFiles($this->_temp_directory, $this->_time_statr);
+        return $this->getView($this->_partial_intervals, $type_output, $path_file);
     }
 
     public function setPartialIntervals()
@@ -358,5 +363,49 @@ class StatSeries
                 }
             }
         }
+    }
+    
+    public function getView(array $partial_intervals, string $type_output, ?string $path_file = null)
+    {
+        if(strcasecmp($type_output, 'array') == 0) {
+            return $this->buildArrayOutput($partial_intervals);
+        } elseif (strcasecmp($type_output, 'json') == 0) {
+            return $this->buildJsonOutput($partial_intervals);
+        } elseif (strcasecmp($type_output, 'file') == 0) {
+            return $this->buildFileOutput($partial_intervals, $path_file);
+        } else {
+            throw \ErrorException('Error return type');
+        }
+    }
+    
+    public function buildArrayOutput($partial_intervals)
+    {
+        $grouped_series = [];
+        foreach ($partial_intervals as $i => $value) {
+            $grouped_series[$i]['left_border'] = $value['left_value'];
+            $grouped_series[$i]['right_border'] = $value['right_value'];
+            $grouped_series[$i]['middle_partial_interval'] = $value['mid_interval'];
+            $grouped_series[$i]['interval_frequency'] = $value['m_i'];
+            $grouped_series[$i]['relative_frequency'] = $value['relative_frequency'];
+        }
+        return $grouped_series;
+    }
+    
+    public function buildJsonOutput($partial_intervals)
+    {
+        return json_encode($this->buildArrayOutput($partial_intervals));
+    }
+    
+    public function buildFileOutput($partial_intervals, $path_file)
+    {
+        if(is_null($path_file)) {
+            throw \ErrorException('Error path output file');
+        }
+        $view = '';
+        foreach ($partial_intervals as $i => $value) {
+            $view .= $i . " " . $value['left_value'] . ";" . " " . $value['right_value'] . "   "
+                    . $value['m_i'] . "  " . $value['relative_frequency'] . " " . $value['mid_interval'] . "\r\n";
+        }
+        file_put_contents($path_file . $this->getOutputFileName(), $view);
     }
 }
