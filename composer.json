@@ -23,8 +23,5 @@
     "require": {
         "php": "^7.0"
     },
-    "require-dev": {
-        "roave/security-advisories" : "dev-master"
-    },
     "minimum-stability": "stable"
 }
