@@ -20,8 +20,16 @@
             "swe\\" : "src"
         }
     },
+    "autoload-dev": {
+	"psr-4": {
+            "swe\\tests\\": "tests"
+	}
+    },
     "require": {
         "php": "^7.0"
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    }
 }
