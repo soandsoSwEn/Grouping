@@ -85,7 +85,15 @@ class StatSeries implements StatSeriesInterface
     public function __construct()
     {
         $this->_time_start = time();
+        $this->setTmpDirectory();
+    }
+    
+    public function setTmpDirectory()
+    {
         $this->_temp_directory = dirname(__FILE__).'/tmp';
+        if (!is_dir($this->_temp_directory)) {
+            mkdir($this->_temp_directory);
+        }
     }
 
     /**
