@@ -16,7 +16,7 @@ class StatSeries implements StatSeriesInterface
      * @var string Directory for temporary input files 
      */
     private $_temp_directory;
-    
+
     /**
      * @var string Output file name 
      */
@@ -46,7 +46,7 @@ class StatSeries implements StatSeriesInterface
      * @var float minimum value of a random variable 
      */
     private $_X_min = null;
-    
+
     /**
      * @var float maximum value of a random variable 
      */
@@ -331,7 +331,7 @@ class StatSeries implements StatSeriesInterface
     public function putInTmpFile(array $data) : void
     {
         $file = $this->_temp_directory . '/' . $this->_time_start . '_' . time() . '_' . md5($this->_temp_file) . '.dat';
-        if(file_exists($file)) {
+        if (file_exists($file)) {
             file_put_contents($file, serialize($data), FILE_APPEND);
         } else {
             file_put_contents($file, serialize($data));
@@ -345,7 +345,7 @@ class StatSeries implements StatSeriesInterface
      */
     public function calculateXmin(array $data) : void
     {
-        if(!is_null($this->getXmin())) {
+        if (!is_null($this->getXmin())) {
             if($min = min($data) < $this->getXmin()) {
                 $this->setXmin(floatval(min($data)));
             }
@@ -361,7 +361,7 @@ class StatSeries implements StatSeriesInterface
      */
     public function calculateXmax(array $data) : void
     {
-        if(!is_null($this->getXmax())) {
+        if (!is_null($this->getXmax())) {
             if($max = max($data) < $this->getXmax()) {
                 $this->setXmax($max);
             }
@@ -413,10 +413,10 @@ class StatSeries implements StatSeriesInterface
         $files = scandir($this->_temp_directory);
         foreach ($files as $file) 
         {
-            if(is_file($this->_temp_directory.'/'.$file))
+            if (is_file($this->_temp_directory.'/'.$file))
             {
                 list($time_start, $time_file) = explode('_', $file);
-                if($this->_time_start == intval($time_start))
+                if ($this->_time_start == intval($time_start))
                 {
                     $file_data = unserialize(file_get_contents($this->_temp_directory.'/'.$file));
                     $this->calculateIntFrequencies($file_data);
@@ -436,8 +436,7 @@ class StatSeries implements StatSeriesInterface
      */
     public function setPartialIntervals() : void
     {
-        for ((int)$i = 1; $i <= $this->getK(); $i++)
-        {
+        for ((int)$i = 1; $i <= $this->getK(); $i++) {
             $left_board = $this->getXmin() + (($i-1)*$this->getC());
             $right_board = $this->getXmin() + $i*$this->getC();
             $this->setPartIntervals($i, $left_board, $right_board);
@@ -455,14 +454,10 @@ class StatSeries implements StatSeriesInterface
         $board_right = count($intervals);
         /** right border of the last interval of the statistical series */
         $board = false;
-        for ((int) $i = 1; $i <= $this->getK(); $i++) 
-        {
-            foreach ($intervals as $k => $interval)
-            {
-                if($i == $k)
-                {
-                    if($board_right == $k)
-                    {
+        for ((int) $i = 1; $i <= $this->getK(); $i++) {
+            foreach ($intervals as $k => $interval) {
+                if ($i == $k) {
+                    if ($board_right == $k) {
                         $board = true;
                     }
                     $this->setM_I($i, $this->calcMiInterval($data, $interval, $board));
@@ -530,10 +525,8 @@ class StatSeries implements StatSeriesInterface
     public function deleteTmpFiles($temp_directory, $time_start)
     {
         $files = scandir($temp_directory);
-        foreach ($files as $file)
-        {
-            if (is_file($this->_temp_directory . '/' . $file))
-            {
+        foreach ($files as $file) {
+            if (is_file($this->_temp_directory . '/' . $file)) {
                 list($time_start_file) = explode('_', $file);
                 if ($time_start == intval($time_start_file)) {
                     unlink($temp_directory . '/' . $file);

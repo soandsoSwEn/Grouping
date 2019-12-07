@@ -34,8 +34,9 @@ interface StatSeriesInterface
     
     /**
      * Generation of grouped statistical series
-     * @param string $type_output
-     * @param string|null $path_file
+     * @param string $type_output Defines output format - array, json or file
+     * @param string|null $path_file Path of the output file (it matters if 
+     * the output format is selected file)
      * @return array|null
      */
     public function generateSeries(string $type_output, ?string $path_file = null) : ?array;

@@ -2,7 +2,7 @@
     "name": "soandso/grouping",
     "description": "Statistical grouping",
     "type": "liblary",
-    "license": "GPLv2 or later",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Dmytriyenko Vyacheslav",
