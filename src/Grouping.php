@@ -43,7 +43,7 @@ class Grouping
      * @return array|null
      * @throws \ErrorException
      */
-    public function buildGss(string $output, ?string $path_file = null) : ?array
+    public function buildGss(string $output, ?string $path_file = null)
     {
         if(!in_array($output, $this->return_type)) {
             throw new \ErrorException('Error return type');

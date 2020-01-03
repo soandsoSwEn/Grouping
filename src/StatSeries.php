@@ -386,7 +386,7 @@ class StatSeries implements StatSeriesInterface
      */
     public function calculateN(int $data) : int
     {
-        return $this->setN($this->getN() + intval($data));
+        return $this->_n = $this->getN() + intval($data);
     }
     
     /**
@@ -415,7 +415,7 @@ class StatSeries implements StatSeriesInterface
      * the output format is selected file)
      * @return array|null
      */
-    public function generateSeries(string $type_output, ?string $path_file = null) : ?array
+    public function generateSeries(string $type_output, ?string $path_file = null)
     {
         $this->setPartialIntervals();
         $files = scandir($this->_temp_directory);
@@ -551,7 +551,7 @@ class StatSeries implements StatSeriesInterface
      * @return array|null
      * @throws \ErrorException
      */
-    public function getView(array $partial_intervals, string $type_output, ?string $path_file = null) : ?array
+    public function getView(array $partial_intervals, string $type_output, ?string $path_file = null)
     {
         if(strcasecmp($type_output, 'array') == 0) {
             return $this->buildArrayOutput($partial_intervals);
@@ -587,7 +587,7 @@ class StatSeries implements StatSeriesInterface
      * @param type $partial_intervals Partial intervals of a grouped statistical series
      * @return array grouped statistical series
      */
-    public function buildJsonOutput($partial_intervals) : array
+    public function buildJsonOutput($partial_intervals) : string
     {
         return json_encode($this->buildArrayOutput($partial_intervals));
     }

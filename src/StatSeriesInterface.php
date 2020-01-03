@@ -39,7 +39,7 @@ interface StatSeriesInterface
      * the output format is selected file)
      * @return array|null
      */
-    public function generateSeries(string $type_output, ?string $path_file = null) : ?array;
+    public function generateSeries(string $type_output, ?string $path_file = null);
     
     /**
      * Forms the output of a statistical grouped series
@@ -49,5 +49,5 @@ interface StatSeriesInterface
      * the output format is selected file)
      * @return array|null
      */
-    public function getView(array $partial_intervals, string $type_output, ?string $path_file = null) : ?array;
+    public function getView(array $partial_intervals, string $type_output, ?string $path_file = null);
 }
