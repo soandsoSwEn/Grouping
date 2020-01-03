@@ -88,14 +88,14 @@ $result = $object->buildGss($output, $path_file);
 $output - parameter defining the format of the returned result. The parameter is required and can take such values ​​as 'array', 'json' and 'file'.
 $path_file - parameter, defines the system path to the directory where the result file will be written. The parameter is optional. Must end with a slash '/'. Example:
 
-```php
+```bash
 /var/www/domain/folder/
 ```
 
 As a result of constructing a guided statistical series, the library presents the following data: the number of partial intervals, the values ​​at the boundaries of the partial intervals, interval frequencies, random values ​​at the midpoints of partial intervals, interval frequencies.
 For example, the output in array format will look like:
 
-```php
+```
 [1]=>
   array(5) {
     ["left_border"]=>
@@ -137,4 +137,4 @@ Grouping conforms to the following standards:
 License
 -------
 
-Grouping is licensed under the GPLv2(https://www.gnu.org/licenses/old-licenses/gpl-2.0.html) License.
+Grouping is licensed under the GPLv2 (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html) License.
